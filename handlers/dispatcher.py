@@ -14,6 +14,7 @@ async def dispatcher(update: Update, bot: Bot, context):
                 order='-created_at',
                 lang='fa',
                 active=True,
+                temp={}
             )
             await user_obj.insert()
 
@@ -21,7 +22,6 @@ async def dispatcher(update: Update, bot: Bot, context):
             msg_handler = MessageHandler(
                 update=update,
                 bot=bot,
-                contexts=context,
                 user=user_obj
             )
             if temp_obj := msg_handler.get_temp_obj:

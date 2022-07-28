@@ -6,6 +6,7 @@ class User(Document):
     order: str
     lang: str
     active: bool
+    temp: dict
 
 
 class BlueDandan(Document):

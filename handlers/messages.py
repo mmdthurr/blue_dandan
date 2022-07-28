@@ -23,8 +23,8 @@ class Temp:
                  type_of: str = None,
                  title: str = None,
                  ):
-        self.message_id = message_id
         self.stage = stage
+        self.message_id = message_id
         self.file_id = file_id
         self.file_unique_id = file_unique_id
         self.type_of = type_of
@@ -37,12 +37,10 @@ class MessageHandler:
             update: Update,
             bot: Bot,
             user: User,
-            contexts: dict
     ):
         self.update = update
         self.bot = bot
         self.user = user
-        self.contexts = contexts
         self.st = Statics(self.user.lang)
 
     @property
@@ -62,11 +60,11 @@ class MessageHandler:
 
     @property
     def get_temp_obj(self) -> Temp:
-        if data := self.contexts.get(self.update.current_user.user_id):
-            return data
+        if self.user.temp:
+            return Temp(**self.user.temp)
 
-    def set_temp_obj(self, temp_obj: Temp):
-        self.contexts[self.update.current_user.user_id] = temp_obj
+    async def set_temp_obj(self, temp_obj: dict):
+        await self.user.set({User.temp: temp_obj})
 
     async def start(self):
         await self.bot.request(
@@ -107,10 +105,10 @@ class MessageHandler:
         )
 
     async def start_add_up(self):
-        self.set_temp_obj(
+        await self.set_temp_obj(
             Temp(
-                stage=0
-            )
+                stage=0,
+            ).__dict__
         )
         await self.bot.request(
             method_dict=sendMessage(
@@ -128,7 +126,7 @@ class MessageHandler:
 
     async def cancel_conv(self):
         try:
-            del self.contexts[self.update.current_user.user_id]
+            await self.set_temp_obj({})
             await self.bot.request(
                 method_dict=sendMessage(
                     chat_id=self.update.message.chat.chat_id,
@@ -146,90 +144,90 @@ class MessageHandler:
             msg = self.st.query('send_title_msg')
             if self.update.message.audio:
                 if self.update.message.audio.mime_type == 'audio/mpeg':
-                    self.set_temp_obj(
+                    await self.set_temp_obj(
                         Temp(
                             stage=1,
                             message_id=self.update.message.message_id,
                             file_id=self.update.message.audio.file_id,
                             file_unique_id=self.update.message.audio.file_unique_id,
                             type_of='audio'
-                        )
+                        ).__dict__
                     )
                 else:
                     msg = self.st.query('warn_mp3_msg')
             elif self.update.message.animation:
-                self.set_temp_obj(
+                await self.set_temp_obj(
                     Temp(
                         stage=1,
                         message_id=self.update.message.message_id,
                         file_id=self.update.message.animation.file_id,
                         file_unique_id=self.update.message.animation.file_unique_id,
                         type_of='animation'
-                    )
+                    ).__dict__
                 )
             elif self.update.message.photo:
-                self.set_temp_obj(
+                await self.set_temp_obj(
                     Temp(
                         stage=1,
                         message_id=self.update.message.message_id,
                         file_id=self.update.message.photo[0].file_id,
                         file_unique_id=self.update.message.photo[0].file_unique_id,
                         type_of='photo'
-                    )
+                    ).__dict__
                 )
             elif self.update.message.sticker:
-                self.set_temp_obj(
+                await self.set_temp_obj(
                     Temp(
                         stage=1,
                         message_id=self.update.message.message_id,
                         file_id=self.update.message.sticker.file_id,
                         file_unique_id=self.update.message.sticker.file_unique_id,
                         type_of='sticker'
-                    )
+                    ).__dict__
                 )
             elif vid := self.update.message.video:
                 if vid.mime_type == 'video/mp4':
-                    self.set_temp_obj(
+                    await self.set_temp_obj(
                         Temp(
                             stage=1,
                             message_id=self.update.message.message_id,
                             file_id=self.update.message.video.file_id,
                             file_unique_id=self.update.message.video.file_unique_id,
                             type_of='video'
-                        )
+                        ).__dict__
                     )
                 else:
                     msg = self.st.query('warn_video_mime_msg')
             elif self.update.message.voice:
-                self.set_temp_obj(
+                await self.set_temp_obj(
                     Temp(
                         stage=1,
                         message_id=self.update.message.message_id,
                         file_id=self.update.message.voice.file_id,
                         file_unique_id=self.update.message.voice.file_unique_id,
                         type_of='voice'
-                    )
+                    ).__dict__
                 )
             elif doc := self.update.message.document:
                 if doc.mime_type == 'image/gif':
-                    self.set_temp_obj(
+                    await self.set_temp_obj(
                         Temp(
                             stage=1,
                             message_id=self.update.message.message_id,
                             file_id=doc.file_id,
                             file_unique_id=doc.file_unique_id,
                             type_of='animation'
-                        )
+                        ).__dict__
                     )
                 else:
-                    self.set_temp_obj(
+                    await self.set_temp_obj(
                         Temp(
                             stage=1,
                             message_id=self.update.message.message_id,
                             file_id=self.update.message.document.file_id,
                             file_unique_id=self.update.message.document.file_unique_id,
                             type_of='document'
-                        )
+                        ).__dict__
                     )
 
         elif stage == 1:
@@ -237,7 +235,7 @@ class MessageHandler:
             temp_obj = self.get_temp_obj
             temp_obj.title = self.update.message.text[0:32]
             temp_obj.stage = 2
-            self.set_temp_obj(temp_obj)
+            await self.set_temp_obj(temp_obj.__dict__)
 
         elif stage == 2:
             msg = self.st.query('wait_msg')
@@ -282,7 +280,7 @@ class MessageHandler:
             except ValueError:
                 msg = self.st.query('does_exist_msg')
 
-            del self.contexts[self.update.current_user.user_id]
+            await self.set_temp_obj({})
 
         await self.bot.request(
             method_dict=sendMessage(
