@@ -1,8 +1,129 @@
+static_dict = {
+    'start_msg': {
+        'fa':
+'''
+با بلوتوث خاطره دارم تشکر فراوان از کانال <a href = "https://t.me/BLUEDANDAN">دوران زیبای بلوتوث</a> ولی سنم زیاد نیست
+
+محوریت این ربات محتوای قدیمیه اگه فایلی دارید که فک میکنید قدیمیه از آموزش اندروید تا فیلم سه بعدی و ... برامون ارسال کنید
+
+همچنین "دولوپر" نیستم و پورتفولیو برای من قهوه بخرید ندارم پس قطعا ربات بی عیبی نیست اگه مشکلی داشت یا مثلا فیچر جدیدی به ذهنتون رسید لطف می کنید منت بر سر ما می نهید بگید اگه خودتونم پایتون بلدید <a href = "https://github.com/mmdthurr/blue_dandan">contribute</a> کنید(مدیونید فک کنید واسه ستاره گذاشتم)
+''',
+        'en': 'blue dandan bot'
+    },
+    'guide_msg': {
+        'fa':
+'''
+<b>• نحوه جستجو به صورت اینلاین</b>
+
+<code>@BlueDandanbot [title]</code>
+به صورت پیشفرض اگه چیزی ننوشته باشید اول پنج نتیجه اخیری که استفاده کردید با توجه به آخرین زمان استفاده لیست میشه و بعدش نتیجه ها به ترتیبی که خودتون انتخاب کردید ادامه پیدا میکنه در غیر اینصورت به صورت پیشفرض بین عناوین جستجو میکنه با ترتیبی که خودتون انتخاب کردید
+
+<code>@BlueDandanbot +[title]</code>
+اگه با مثبت شروع بشه نتیجه انتخابی شما با دکمه های اینلاین ارسال میشه که درواقع یجوری لینک میشه به فایل اصلی
+
+<code>@BlueDandanbot .id file_unique_id</code>
+کویری هایی که باهاش شروع میشن نیازی نداره از قبل فعال باشه در واقع همون file_unique_id هستن البته اگه فعال نباشن تو پنج ریسنت اولتون قابل مشاهده نخواهند شد
+
+<code>@BlueDandanbot .d [detail]</code>
+این برای جستجوی بین توضیحاته
+''',
+        'en':
+'''
+<code>@BlueDandanbot [title]</code>
+
+<code>@BlueDandanbot + [title]</code>
+
+<code>@BlueDandanbot .id [file_unique_id]</code>
+
+<code>@BlueDandanbot .d [detail]</code>
+'''
+    },
+    'send_yadeh_msg': {
+        'fa': 'لطفا فایل خود را بلوتوث کنید',
+        'en': 'send file'
+    },
+    'send_title_msg': {
+        'fa':
+'''
+عنوان رو ارسال کنید
+
+<i>سعی کنید بیشتر از 32 حرف نباشه(با فاصله)
+فک کنید خودتون می خواید برای اولین بار جستجوش کنید عنوان کلی نباشه بهتره</i>
+''',
+        'en': 'title'
+    },
+    'send_description_msg': {
+        'fa':
+'''
+توضیحات مربوطه رو ارسال کنید
+
+<i>این بخش نمایش داده نمیشه معمولا شامل محتویاتیه که داخل فایل هست تیکه کلام معروف یا اسم شخصی که داخل تصویره
+یا مثلا حرفایی که بین افراد مبادله میشه یا میتونید لینک منبع رو شامل شه یا حتی آیدی خودتون یا کانالتون محدودیتی در این بخش نیست هر چه کامل تر باشه بهتره</i>
+''',
+        'en': 'description'
+    },
+    'wait_msg': {
+        'fa': 'منتظر تایید باشید',
+        'en': 'wait for verification'
+    },
+    'warn_cp_msg': {
+        'fa': 'درخواست نامربوط',
+        'en': 'bad request'
+    },
+    'warn_mp3_msg': {
+        'fa': 'فقط mp3 پذیرفته میباشد',
+        'en': 'only mp3 audio accepted'
+    },
+    'warn_video_mime_msg': {
+        'fa': 'ویدیو با فورمتی غیر از mp4 پذیرفته نیست',
+        'en': 'mime not supported not supported'
+    },
+    'does_exist_msg': {
+        'fa': 'در حال حاضر موجود میباشد',
+        'en': 'currently exist'
+    },
+    'cancel_w': {
+        'fa': 'انصراف',
+        'en': 'cancel'
+    },
+    'cancelled_w': {
+        'fa': 'لغو شد',
+        'en': 'canceled'
+    },
+    'lang_w': {
+        'fa': 'زبان',
+        'en': 'lang'
+    },
+    'order_w': {
+        'fa': 'ترتیب',
+        'en': 'order'
+    },
+    'how_to_use_w': {
+        'fa': 'راهنمای استفاده',
+        'en': 'how to use'
+    },
+    'switch_pm_txt': {
+        'fa': 'دجال واره',
+        'en': 'channel'
+    },
+    'arg_msg': {
+        'fa':
+'''
+اگه خواستید در کانال من عضو شوید
+https://t.me/two_kB_consist_of_b8
+'''
+    ,
+        'en': 'https://t.me/two_kB_consist_of_b8'
+    }
+
+}
+
+
 class Statics:
     def __init__(self, lang):
         self.lang = lang
 
-    Token = 'telegram token'
+    Token = 'TOKEN_TG'
     yadeh_private_chat_id = -100
 
     def query(self, q):
