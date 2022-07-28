@@ -1,0 +1,13 @@
+class Statics:
+    def __init__(self, lang):
+        self.lang = lang
+
+    Token = 'telegram token'
+    yadeh_private_chat_id = -100
+
+    def query(self, q):
+        return static_dict.get(q).get(self.lang)
+
+    @property
+    def start_msg(self):
+        return self.query('start_msg')
