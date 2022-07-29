@@ -125,10 +125,8 @@ class Statics:
 
     Token = 'TOKEN_TG'
     yadeh_private_chat_id = -100
+    secret_key = 'random_secret_key'
+    url = '127.0.0.1:8000'
 
     def query(self, q):
         return static_dict.get(q).get(self.lang)
-
-    @property
-    def start_msg(self):
-        return self.query('start_msg')
