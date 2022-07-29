@@ -257,6 +257,9 @@ class MessageHandler:
                             [
                                 [inline_button(text='y', callback_data='y')],
                                 [inline_button(text='n', callback_data='n')],
+                                [inline_button(
+                                    text='v',
+                                    url=f'{self.st.url}/tg/{self.st.secret_key}/{temp_obj.file_unique_id}')]
                             ]
                         )
 

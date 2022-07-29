@@ -36,8 +36,8 @@ async def root():
     return {'blue': 1}
 
 
-@app.post('/tg/hook/{token}', status_code=200)
-async def hook_dispatcher(token: str, up: dict = Body()):
+@app.post("/tg/hook/{token}", status_code=200)
+async def hook(token: str, up: dict = Body()):
     if token == Statics.Token:
         update = Update.dec_update(up)
         if not context.update_id_is_used(update_id=update.update_id):
@@ -47,3 +47,12 @@ async def hook_dispatcher(token: str, up: dict = Body()):
                 context=context.user_data
             )
         return 200
+
+
+@app.get("/tg/{secret_key}/{file_unique_id}")
+async def preview(secret_key: str, file_unique_id: str):
+    if secret_key == Statics.secret_key:
+        if blue_obj := await BlueDandan.find(
+                BlueDandan.file_unique_id == file_unique_id
+        ).first_or_none():
+            return blue_obj.__dict__
