@@ -41,7 +41,10 @@ class MessageHandler:
         self.update = update
         self.bot = bot
         self.user = user
-        self.st = Statics(self.user.lang)
+
+    @property
+    def st(self):
+        return Statics(self.user.lang)
 
     @property
     def main_keyboard(self):
